@@ -23,8 +23,7 @@
 # the case. Therefore, you don't have to disable it anymore.
 #
 
-FROM debian:jessie
-
+FROM daocloud.io/library/debian:jessie
 # allow replacing httpredir or deb mirror
 ARG APT_MIRROR=deb.debian.org
 RUN sed -ri "s/(httpredir|deb).debian.org/$APT_MIRROR/g" /etc/apt/sources.list
@@ -99,15 +98,15 @@ RUN cd /usr/local/lvm2 \
 # See https://git.fedorahosted.org/cgit/lvm2.git/tree/INSTALL
 
 # Configure the container for OSX cross compilation
-ENV OSX_SDK MacOSX10.11.sdk
-ENV OSX_CROSS_COMMIT a9317c18a3a457ca0a657f08cc4d0d43c6cf8953
-RUN set -x \
-	&& export OSXCROSS_PATH="/osxcross" \
-	&& git clone https://github.com/tpoechtrager/osxcross.git $OSXCROSS_PATH \
-	&& ( cd $OSXCROSS_PATH && git checkout -q $OSX_CROSS_COMMIT) \
-	&& curl -sSL https://s3.dockerproject.org/darwin/v2/${OSX_SDK}.tar.xz -o "${OSXCROSS_PATH}/tarballs/${OSX_SDK}.tar.xz" \
-	&& UNATTENDED=yes OSX_VERSION_MIN=10.6 ${OSXCROSS_PATH}/build.sh
-ENV PATH /osxcross/target/bin:$PATH
+#ENV OSX_SDK MacOSX10.11.sdk
+#ENV OSX_CROSS_COMMIT a9317c18a3a457ca0a657f08cc4d0d43c6cf8953
+#RUN set -x \
+#	&& export OSXCROSS_PATH="/osxcross" \
+#	&& git clone https://github.com/tpoechtrager/osxcross.git $OSXCROSS_PATH \
+#	&& ( cd $OSXCROSS_PATH && git checkout -q $OSX_CROSS_COMMIT) \
+#	&& curl -sSL https://s3.dockerproject.org/darwin/v2/${OSX_SDK}.tar.xz -o "${OSXCROSS_PATH}/tarballs/${OSX_SDK}.tar.xz" \
+#	&& UNATTENDED=yes OSX_VERSION_MIN=10.6 ${OSXCROSS_PATH}/build.sh
+#ENV PATH /osxcross/target/bin:$PATH
 
 # Install seccomp: the version shipped in trusty is too old
 ENV SECCOMP_VERSION 2.3.1
@@ -129,6 +128,9 @@ RUN set -x \
 #            will need updating, to avoid errors. Ping #docker-maintainers on IRC
 #            with a heads-up.
 ENV GO_VERSION 1.7.4
+ENV http_proxy http://proxy.vmware.com:3128
+ENV https_proxy http://proxy.vmware.com:3128
+
 RUN curl -fsSL "https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz" \
 	| tar -xzC /usr/local
 

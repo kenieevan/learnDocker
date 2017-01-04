@@ -94,6 +94,8 @@ func noArgs(cmd *cobra.Command, args []string) error {
 }
 
 func main() {
+	
+	fmt.Printf("jm: docker client main begin\n")
 	// Set terminal emulation based on platform as required.
 	stdin, stdout, stderr := term.StdStreams()
 	logrus.SetOutput(stderr)
@@ -116,6 +118,8 @@ func main() {
 		fmt.Fprintln(stderr, err)
 		os.Exit(1)
 	}
+
+	fmt.Printf("jm: docker client main end\n")
 }
 
 func showVersion() {
