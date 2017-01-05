@@ -1,6 +1,8 @@
 package image
 
 import (
+      //debug
+         "fmt"
 	"golang.org/x/net/context"
 
 	"github.com/docker/docker/api/types"
@@ -59,7 +61,8 @@ func newListCommand(dockerCli *command.DockerCli) *cobra.Command {
 
 func runImages(dockerCli *command.DockerCli, opts imagesOptions) error {
 	ctx := context.Background()
-
+         //debug
+	fmt.Printf("jm: docker runImages begin\n")
 	filters := opts.filter.Value()
 	if opts.matchName != "" {
 		filters.Add("reference", opts.matchName)
@@ -92,5 +95,7 @@ func runImages(dockerCli *command.DockerCli, opts imagesOptions) error {
 		},
 		Digest: opts.showDigests,
 	}
+
+	fmt.Printf("jm: docker runImages end\n")
 	return formatter.ImageWrite(imageCtx, images)
 }

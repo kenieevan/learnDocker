@@ -100,7 +100,9 @@ func main() {
 	stdin, stdout, stderr := term.StdStreams()
 	logrus.SetOutput(stderr)
 
+         //command is a package. NewDockerCli creates a docker client
 	dockerCli := command.NewDockerCli(stdin, stdout, stderr)
+
 	cmd := newDockerCommand(dockerCli)
 
 	if err := cmd.Execute(); err != nil {
