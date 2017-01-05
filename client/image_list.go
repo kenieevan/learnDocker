@@ -11,6 +11,8 @@ import (
 )
 
 // ImageList returns a list of images in the docker host.
+//debug the Client is the cxt
+//the ImageSummary is the return result
 func (cli *Client) ImageList(ctx context.Context, options types.ImageListOptions) ([]types.ImageSummary, error) {
 	var images []types.ImageSummary
 	query := url.Values{}
@@ -34,6 +36,7 @@ func (cli *Client) ImageList(ctx context.Context, options types.ImageListOptions
 		query.Set("all", "1")
 	}
 
+      //debug send http get to the ctx, which is the docker daemon
 	serverResp, err := cli.get(ctx, "/images/json", query, nil)
 	if err != nil {
 		return images, err
